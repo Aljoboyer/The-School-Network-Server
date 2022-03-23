@@ -10,6 +10,11 @@ const AssingmentSchema = mongoose.Schema({
         type: String,
         required: false,
     },
+    class:{
+        type:String,
+        required:false,
+    },
+  
     img:{
         type: mongoose.Mixed,
     }

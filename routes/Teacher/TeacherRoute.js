@@ -49,20 +49,29 @@ router.post("/assignmentPublish", async (req, res) => {
 });
 //Publishing Image Notice
 router.post("/PublishImageAssing", async (req, res) => {
-    const front = req.files.noticeImage.data;
-
+    const front = req.files.assignmentImage.data;
+    const studentClass=req.query.class
     const encodedpic1 = front.toString("base64");
     const img = Buffer.from(encodedpic1, "base64");
-    const notice = new StudentAssignmentCollection({ img: img });
+    const assing = new StudentAssignmentCollection({ img: img,class:studentClass});
 
     try {
-        await notice.save();
+        await assing.save();
         res.send({ success: "success" });
     } catch (er) {
         console.log(er);
     }
 });
-
+//Teacher Geting Previous Assigmnent
+router.get("/GetingPreviosuAssignment", async (req, res) => {
+    const notice = await StudentAssignmentCollection.find({});
+    res.send(notice);
+});
+//Principal DELETING Previous Assignment
+router.delete("/DeleteAssignment/:id", async (req, res) => {
+    await StudentAssignmentCollection.deleteOne({ _id: ObjectId(req.params.id) });
+    res.send({ deleted: "item Deleted" });
+});
 // Publish notice from teachers for students
 router.post("/PublishNotice", async (req, res) => {
     const notice = new StudentNoticeCollection(req.body);
